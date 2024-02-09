@@ -19,7 +19,7 @@ app.listen(3000, () => {
   console.log("Server started on port 3000");
 });
 app.use("/api/user", router);
-app.use("/api/user", authrouter);
+app.use("/api/auth", authrouter);
 app.use((error, req, res, next) => {
 
   const statusCode = error.statusCode || 500;
