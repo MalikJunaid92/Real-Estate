@@ -1,5 +1,6 @@
 import User from "../models/userModal.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { errorhandler } from "../utilis/error.js";
 
 export const signup = async (req, res, next) => {
@@ -20,6 +21,11 @@ export const signin = async (req, res, next) => {
     if (!validUser) return errorhandler(404, "User not found!");
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return errorhandler(401, "Invalid Password");
+    const token = jwt.sign({ id: validUser._id }, process.env.JWTSECRET);
+    const {password:pass,...rest}=validUser._doc;
+    res.cookie("access_token", token, { httpOnly: true }).status(200).json({
+      rest
+    });
   } catch (error) {
     next(error);
   }
