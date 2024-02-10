@@ -1,24 +1,25 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch ,useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice.js";
+
 function SignIn() {
   const [formData, setFormData] = useState({});
-  
-  const {loading,error}=useSelector(state=> state.user)
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
+console.log(loading)
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
   };
-  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -37,12 +38,9 @@ function SignIn() {
       }
 
       dispatch(signInSuccess(data));
-
       navigate("/");
-      console.log(data); // Move console.log inside try block
     } catch (error) {
       dispatch(signInFailure(error.message));
-
     }
   };
 
@@ -65,14 +63,14 @@ function SignIn() {
           onChange={handleChange}
         />
         <button
-          disabled={loading}
+          disabled={loading} // Conditionally disable the button based on loading state
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
       </form>
       <div className="flex flex-row gap-2 mt-5">
-        <p>Dont have an account?</p>
+        <p>Don't have an account?</p>
         <Link to="/sign-up">
           <span className="text-blue-700">Sign Up</span>
         </Link>
