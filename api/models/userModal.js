@@ -16,9 +16,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    avator:{
+    avatar:{
       type:String,
-      default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJIyiiNbz3VC9Afr-LqWpcw7loxjPnacfZSA&usqp=CAU"
+      default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO12gtxAFj4jl2FWYvxg7Ck-LrxbC4z_cC6xhwUsiJbZViBBXC1WrqfEgC4Q&s"
     }
   },
   {
