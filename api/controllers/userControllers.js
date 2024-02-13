@@ -1,10 +1,39 @@
+import { errorhandler } from "../utilis/error.js";
+import bycryptjs from "bcryptjs";
+import User from "../models/userModal.js";
+
+
+
 export const test = (req, res) => {
-  res.json({ message:"Api route is working" });
+  res.json({ message: "Api route is working" });
 };
 
 
+export const updateUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id)
+    return next(errorhandler(401, 'You can only update your own account!'));
+  try {
+    if (req.body.password) {
+      req.body.password = bycryptjs.hashSync(req.body.password, 10);
+    }
 
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+          avatar: req.body.avatar,
+        },
+      },
+      { new: true }
+    );
 
-export const updateUser=(req,res,next)=>{
-  
-}
+    const { password, ...rest } = updatedUser._doc;
+
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
