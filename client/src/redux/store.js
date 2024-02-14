@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import userReducer, { initialState as userInitialState } from "./user/userSlice";
+import userReducer from "./user/userSlice";
 
 const rootReducer = combineReducers({
-    user: userReducer,
-  });
-  
+  user: userReducer,
+});
+
 const persistConfig = {
   key: "root",
   storage,
@@ -16,15 +16,12 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    preloadedState: {
-      user: userInitialState,
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
-  });
-  
-  
+  reducer: persistedReducer,
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
 export const persistor = persistStore(store);
